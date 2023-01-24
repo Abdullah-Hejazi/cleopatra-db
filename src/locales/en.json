@@ -1,0 +1,73 @@
+{
+    "general": {
+        "home": "Home",
+        "themes": "Themes",
+        "logout": "Logout",
+        "about": "About",
+        "save": "Save",
+        "cancel": "Cancel",
+        "lessOptions": "Less Options",
+        "moreOptions": "More Options",
+        "settings": "Settings",
+        "language": "Language",
+        "success": "Success",
+        "delete": "Delete"
+    },
+
+    "login": {
+        "title": "Login",
+        "username": "Username",
+        "password": "Password",
+        "host": "Host",
+        "port": "Port",
+        "login": "Login",
+        "saveAccount": "Save Account",
+        "defaultsTo": "Defaults to",
+        "displayName": "Display Name",
+        "savePassword": "Save Password",
+        "savedAccounts": "Saved Accounts",
+        "noSavedAccounts": "There are no saved accounts.",
+        "passwordNote": "Note",
+        "passwordNoteText": "storing passwords is generally not recommended, if you choose not to, you'll be prompt to enter the password on subsequent logins !",
+        "typePassword": "Type the password"
+    },
+
+    "home": {
+        "databases": "Databases",
+        "create_database": "Create Database",
+        "refresh_databases": "Refresh Databases",
+        "create_new_database": "Create New Database",
+        "database_name": "Database Name",
+        "select_collation": "Select Collation",
+        "drop_database": "Drop Database",
+        "drop_database_confirm": "Delete the database ?",
+        "drop_database_confirm_message": "Are you sure you want to DROP the [{database}] database ?",
+        "drop_database_ask": "Are you sure you want to drop the database",
+        "drop_database_ask_message": "The process of DROPPING the database [{database}] is irreversible, Do you want to procceed?",
+        "database_created": "Database created",
+        "database_created_message": "Database has been created successfully",
+        "database_deleted": "Database deleted",
+        "database_deleted_message": "The database has been deleted successfully"
+    },
+
+    "table": {
+        "is_null": "Null"
+    },
+
+    "import": {
+        "import_database": "Import Database",
+        "import": "Import",
+        "select_file": "Select the file",
+        "selected_file": "Selected file"
+    },
+    
+    "export": {
+        "export_database": "Export Database",
+        "export_table": "Export Table",
+        "export": "Export",
+        "select_file": "Select the save file",
+        "selected_file": "Selected file",
+        "success": "Table Exported",
+        "success_message": "The table has been exported successfully"
+    }
+}
