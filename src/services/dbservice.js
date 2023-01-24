@@ -1,8 +1,16 @@
+import { invoke } from '@tauri-apps/api'
+
 let pool = null
 
 export default {
     createConnection: async (data) => {
-        pool = await mysql.createPool(data)
+        console.log('here')
+        return invoke('login', {
+            host: data.host,
+            username: data.username,
+            password: data.password,
+            port: data.port
+        })
     },
 
     getConnection: () => {

@@ -1,5 +1,7 @@
 <script>
 
+import { appWindow } from '@tauri-apps/api/window'
+
 export default {
     name: 'TitleBar',
 
@@ -10,15 +12,15 @@ export default {
 
     methods: {
         Minimize() {
-            // ipcRenderer.send('minimize-app')
+            appWindow.minimize()
         },
 
         Maximize() {
-            // ipcRenderer.send('maximize-app')
+            appWindow.toggleMaximize()
         },
 
         Close() {
-            // ipcRenderer.send('close-app')
+            appWindow.close()
         },
 
         Logout() {

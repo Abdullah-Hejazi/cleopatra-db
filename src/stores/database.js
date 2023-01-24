@@ -37,20 +37,18 @@ const database = {
             await context.dispatch('clearConnection')
 
             let data = {
+                host: form.host ?? 'localhost',
                 user: form.username,
-                port: form.port,
+                port: form.port ? form.port.toString() : '3306',
                 password: form.password,
                 multipleStatements: true
             }
 
-            if (form.host) {
-                data.host = form.host
-            } else {
-                data.host = 'localhost'
-            }
-
             try {
-                await dbservice.createConnection(data);
+                dbservice.createConnection(data).then((result) => {
+                    console.log('result')
+                })
+                console.log('here2')
 
                 let query = QueryBuilder.select('1').build();
 
