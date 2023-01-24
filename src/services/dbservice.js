@@ -4,10 +4,9 @@ let pool = null
 
 export default {
     createConnection: async (data) => {
-        console.log('here')
         return invoke('login', {
             host: data.host,
-            username: data.username,
+            username: data.user,
             password: data.password,
             port: data.port
         })

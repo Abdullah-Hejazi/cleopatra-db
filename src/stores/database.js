@@ -37,36 +37,18 @@ const database = {
             await context.dispatch('clearConnection')
 
             let data = {
-                host: form.host ?? 'localhost',
+                host: form.host.length > 0 ? form.host : 'localhost',
                 user: form.username,
                 port: form.port ? form.port.toString() : '3306',
                 password: form.password,
                 multipleStatements: true
             }
 
-            try {
-                dbservice.createConnection(data).then((result) => {
-                    console.log('result')
-                })
-                console.log('here2')
 
-                let query = QueryBuilder.select('1').build();
+            context.commit('setData', null)
+            context.commit('setConnected', false)
 
-                await dbservice.query(query);
-
-                context.commit('setData', data)
-                context.commit('setConnected', true)
-
-            } catch (e) {
-                return {
-                    sucess: false,
-                    error: e.message
-                }
-            }
-
-            return {
-                success: true
-            }
+            return dbservice.createConnection(data)
         },
 
         async refreshDatabases(context) {
@@ -323,7 +305,7 @@ const database = {
         async clearConnection(context) {
             context.commit('setData', null)
             context.commit('setConnected', false)
-            await dbservice.endConnection();
+            // await dbservice.endConnection();
         }
     },
 }

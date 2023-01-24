@@ -50,23 +50,14 @@ export default {
 
             this.error = ''
 
-            try {
-                this.Invoke(
-                    await this.$store.dispatch('database/connect', data)
-                )
-
+            this.$store.dispatch('database/connect', data).then(result => {
                 this.$router.push('/databases')
-            } catch (error) {
-                this.error = error.message
-            } finally {
+            }).catch(error => {
+                this.$store.dispatch('database/clearConnection')
+                this.error = error
+            }).finally(() => {
                 this.$loading.hide()
-            }
-        },
-
-        Invoke(result) {
-            if (result.success) return true;
-
-            throw new Error(result?.error)
+            })
         },
 
         MoreOptions() {
