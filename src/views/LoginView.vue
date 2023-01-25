@@ -51,7 +51,8 @@ export default {
             this.error = ''
 
             this.$store.dispatch('database/connect', data).then(result => {
-                this.$router.push('/databases')
+                console.log(result)
+                // this.$router.push('/databases')
             }).catch(error => {
                 this.$store.dispatch('database/clearConnection')
                 this.error = error
@@ -61,6 +62,16 @@ export default {
         },
 
         MoreOptions() {
+            this.$store.dispatch('database/test').then(result => {
+                console.log(result)
+                // this.$router.push('/databases')
+            }).catch(error => {
+                this.$store.dispatch('database/clearConnection')
+                this.error = error
+            }).finally(() => {
+                this.$loading.hide()
+            })
+
             this.moreOptions.active = !this.moreOptions.active
             if (this.moreOptions.active) {
                 this.moreOptions.icon = 'pi pi-angle-up'

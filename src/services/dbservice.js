@@ -1,7 +1,5 @@
 import { invoke } from '@tauri-apps/api'
 
-let pool = null
-
 export default {
     createConnection: async (data) => {
         return invoke('login', {
@@ -28,6 +26,11 @@ export default {
             if (item.parameters) {
                 parameters.push(...item.parameters)
             }
+        })
+
+        return invoke('query', {
+            query: query,
+            params: parameters
         })
 
         return pool.query(query, parameters)

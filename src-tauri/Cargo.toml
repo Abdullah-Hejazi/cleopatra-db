@@ -21,6 +21,7 @@ tauri = { version = "1.2.4", features = ["api-all"] }
 mysql = "*"
 tokio = "1.24.2"
 lazy_static = "1.4.0"
+futures = "0.3.25"
 
 [features]
 # by default Tauri runs in production mode

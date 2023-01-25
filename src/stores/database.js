@@ -51,6 +51,13 @@ const database = {
             return dbservice.createConnection(data)
         },
 
+        async test(context) {
+            return dbservice.query({
+                query: 'SHOW DATABASES',
+                parameters: []
+            })
+        },
+
         async refreshDatabases(context) {
             try {
                 let query1 = QueryBuilder.select('*').from('information_schema', 'SCHEMATA').build();
