@@ -34,27 +34,39 @@ impl DB {
         Ok("Connected to database".to_string())
     }
 
-    pub async fn query(&mut self, query: &str, params: Vec<&str>) -> result::Result<Vec<Value>, Error> {
-        let conn = self.pool.as_mut().ok_or("Not connected to database");
-        let connection = conn.unwrap_or_else(|e| panic!("{}", e));
+    pub async fn query(&mut self, query: &str, params: Vec<String>) -> result::Result<Vec<Value>, String> {
+        let conn = match self.pool.as_mut() {
+            Some(conn) => conn,
+            None => return Err("Not connected to database".to_string()),
+        };
 
-        let statement = connection.prep(query).unwrap_or_else(|e| panic!("{}", e));
+        //let parameters = params.into_iter().collect::<Vec<_>>();
 
-        let execution: result::Result<Vec<Row>, Error> = connection.exec(statement, params);
+        let statement = match conn.prep(query) {
+            Ok(statement) => statement,
+            Err(e) => return Err(e.to_string()),
+        };
 
-        let rows = execution.unwrap_or_else(|e| panic!("{}", e));
+        let rows: Vec<Row> = match conn.exec(statement, params) {
+            Ok(rows) => rows,
+            Err(e) => return Err(e.to_string()),
+        };
 
         let json_values: Vec<Value> = rows.into_iter().try_fold(Vec::new(), |mut json_values, row| {
             let mut row_map = HashMap::new();
             let columns = row.columns();
             for (index, column) in columns.iter().enumerate() {
-                let val: String = row.get(index).unwrap_or_else(|| panic!("Failed to convert to string dammit"));
+                let val: String = match row.get_opt(index) {
+                    Some(val) => val.unwrap_or("".to_string()),
+                    None => return Err("Failed to get value from row".to_string()),
+                };
 
                 
                 row_map.insert(column.name_str(), val);
             }
             json_values.push(json!(row_map));
-            Ok::<Vec<serde_json::Value>, Error>(json_values)
+
+            Ok::<Vec<serde_json::Value>, String>(json_values)
         })?;
         Ok(json_values)
     }
@@ -72,9 +84,12 @@ pub async fn login(host: &str, username: &str, password: &str, port: &str) -> re
 }
 
 #[tauri::command]
-pub async fn query(query: &str, params: Vec<&str>) -> result::Result<Vec<Value>, String> {
+pub async fn query(query: &str, params: Vec<String>) -> result::Result<Vec<Value>, String> {
     let db = DB_INSTANCE.clone();
     let mut db = db.lock().await;
+
+    println!("Query: {}", query);
+    println!("Params: {:?}", params);
     
     let rows = Box::new(&mut db).as_mut().query(query, params).await;
 

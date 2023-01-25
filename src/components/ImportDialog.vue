@@ -45,11 +45,6 @@ export default {
             // this.$loading.show()
             return;
 
-            DBService.bulkQuery(queries.data.join(';')).finally(() => {
-                this.$loading.hide()
-                this.$emit('visibilityChange', false)
-            })
-
         }
     },
 

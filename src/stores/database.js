@@ -44,40 +44,28 @@ const database = {
                 multipleStatements: true
             }
 
-
-            context.commit('setData', null)
-            context.commit('setConnected', false)
-
             return dbservice.createConnection(data)
         },
 
-        async test(context) {
-            return dbservice.query({
-                query: 'SHOW DATABASES',
-                parameters: []
-            })
+        async connectSet(context, data) {
+            context.commit('setData', data)
+            context.commit('setConnected', true)
         },
 
         async refreshDatabases(context) {
-            try {
-                let query1 = QueryBuilder.select('*').from('information_schema', 'SCHEMATA').build();
-                let query2 = QueryBuilder.select('*').from('information_schema', 'COLLATIONS').build();
+            let query1 = QueryBuilder.select('*').from('information_schema', 'SCHEMATA').build();
+            // let query2 = QueryBuilder.select('*').from('information_schema', 'COLLATIONS').build();
 
-                let [result] = await dbservice.query(query1, query2);
+            return dbservice.query({
+                query: 'SELECT * FROM information_schema.SCHEMATA',
+                parameters: [
+                ]
+            })
+        },
 
-                context.commit('setDatabases', result[0])
-                context.commit('setCollations', result[1])
-
-            } catch (e) {
-                return {
-                    sucess: false,
-                    error: e.message
-                }
-            }
-
-            return {
-                sucess: true
-            }
+        async refreshDatabasesSet(context, data) {
+            context.commit('setDatabases', data)
+            // context.commit('setCollations', result[1])
         },
 
         async createDatabase(context, form) {

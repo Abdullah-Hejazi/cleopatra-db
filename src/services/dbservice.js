@@ -32,12 +32,6 @@ export default {
             query: query,
             params: parameters
         })
-
-        return pool.query(query, parameters)
-    },
-
-    bulkQuery: (query) => {
-        return pool.query(query)
     },
 
     endConnection: () => {

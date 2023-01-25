@@ -73,18 +73,14 @@ export default {
 
             document.getElementById(this.theme).rel = 'stylesheet';
 
-            // settings.set('theme', {
-            //     data: this.theme
-            // })
+            localStorage.setItem('theme', this.theme)
         },
 
         SelectLanguage() {
             if (this.language) {
                 this.$i18n.locale = this.language;
 
-                // settings.set('language', {
-                //     data: this.language
-                // })
+                localStorage.setItem('language', this.language)
             }
         },
 
@@ -94,12 +90,9 @@ export default {
     },
 
     created() {
-        // settings.get('language').then(value => {
-        //     if (value?.data) {
-        //         this.language = value.data
-        //         this.SelectLanguage()
-        //     }
-        // })
+        this.language = localStorage.getItem('language') || 'English'
+        this.SelectLanguage()
+
 
         this.themes.forEach(theme => {
             let link = document.createElement('link');
@@ -114,15 +107,8 @@ export default {
         link.href = 'primeicons.css';
         document.head.appendChild(link);
 
-        // settings.get('theme').then(value => {
-        //     if (value?.data) {
-        //         this.theme = value.data
-        //     } else {
-        //         this.theme = 'arya-blue'
-        //     }
-
-        //     this.SelectTheme()
-        // })
+        this.theme = localStorage.getItem('theme') || 'arya-blue'
+        this.SelectTheme()
     }
 }
 

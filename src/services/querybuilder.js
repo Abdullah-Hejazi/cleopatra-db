@@ -34,7 +34,7 @@ class QueryBuilder {
         let parameters = [database, table];
 
         return {
-            query: `DESCRIBE ??.??`,
+            query: `DESCRIBE ?.?`,
             parameters: parameters
         }
     }
@@ -67,7 +67,7 @@ class QueryBuilder {
     }
 
     static createDatabase(database, charset, collation) {
-        let query = `CREATE DATABASE ??`;
+        let query = `CREATE DATABASE ?`;
         let parameters = [database];
 
         if (charset) {
@@ -87,7 +87,7 @@ class QueryBuilder {
     }
 
     static dropDatabase(database) {
-        let query = `DROP DATABASE ??`;
+        let query = `DROP DATABASE ?`;
         let parameters = [database];
 
         return {
@@ -106,7 +106,7 @@ class QueryBuilder {
     }
 
     static dropTable (database, table) {
-        let query = `DROP TABLE ??.??`;
+        let query = `DROP TABLE ?.?`;
         let parameters = [database, table];
 
         return {
@@ -186,7 +186,7 @@ class QueryBuilder {
 
     orderBy(field, direction) {
         this.additions.push({
-            query: `ORDER BY ?? ${direction}`,
+            query: `ORDER BY ? ${direction}`,
             value: field
         });
 
@@ -239,7 +239,7 @@ class QueryBuilder {
 
     addIndex(type, index) {
         this.indexes.push({
-            query: `${type} (??)`,
+            query: `${type} (?)`,
             value: index
         });
     }
@@ -255,7 +255,7 @@ class QueryBuilder {
 
     addUnique(index) {
         this.indexes.push({
-            query: `CONSTRAINT UNIQUE_${index} UNIQUE (??)`,
+            query: `CONSTRAINT UNIQUE_${index} UNIQUE (?)`,
             value: index
         });
     }
@@ -381,7 +381,7 @@ class QueryBuilder {
         query += this.fields.join(', ');
 
         if (this.database && this.table) {
-            query += ` FROM ??.??`;
+            query += ` FROM ?.?`;
             this.parameters.push(this.database, this.table);
         }
 
@@ -391,11 +391,11 @@ class QueryBuilder {
             query += this.wheres.map(where => {
                 if (where.operator == 'IN') {
                     this.parameters.push(where.field);
-                    return `?? ${where.operator} ${where.value}`;
+                    return `? ${where.operator} ${where.value}`;
                 }
 
                 this.parameters.push(where.field, where.value);
-                return `?? ${where.operator} ?`;
+                return `? ${where.operator} ?`;
             }).join(' AND ');
         }
 
@@ -415,7 +415,7 @@ class QueryBuilder {
 
 
         if (this.database) {
-            query += ` FROM ??`;
+            query += ` FROM ?`;
             this.parameters.push(this.database)
         }
 
@@ -426,7 +426,7 @@ class QueryBuilder {
     }
 
     #buildCreateTable() {
-        let query = `CREATE TABLE ??.?? (`;
+        let query = `CREATE TABLE ?.? (`;
 
         this.parameters.push(this.database, this.table);
 
@@ -462,11 +462,11 @@ class QueryBuilder {
     }
 
     #buildInsert() {
-        let query = `INSERT INTO ??.?? `;
+        let query = `INSERT INTO ?.? `;
 
         this.parameters.push(this.database, this.table);
 
-        query += ` (${this.fields.map(field => '??').join(', ')})`;
+        query += ` (${this.fields.map(field => '?').join(', ')})`;
         this.fields.forEach (field => {
             this.parameters.push(field.column);
         })
@@ -483,11 +483,11 @@ class QueryBuilder {
     }
 
     #buildUpdate() {
-        let query = `UPDATE ??.?? SET `;
+        let query = `UPDATE ?.? SET `;
 
         this.parameters.push(this.database, this.table);
 
-        query += this.fields.map(field => `?? = ?`).join(', ');
+        query += this.fields.map(field => `? = ?`).join(', ');
 
         this.fields.forEach (field => {
             this.parameters.push(field.column);
@@ -500,11 +500,11 @@ class QueryBuilder {
             query += this.wheres.map(where => {
                 if (where.operator == 'IN') {
                     this.parameters.push(where.field);
-                    return `?? ${where.operator} ${where.value}`;
+                    return `? ${where.operator} ${where.value}`;
                 }
 
                 this.parameters.push(where.field, where.value);
-                return `?? ${where.operator} ?`;
+                return `? ${where.operator} ?`;
             }).join(' AND ');
         }
 
@@ -515,7 +515,7 @@ class QueryBuilder {
     }
 
     #buildDelete() {
-        let query = `DELETE FROM ??.??`;
+        let query = `DELETE FROM ?.?`;
 
         this.parameters.push(this.database, this.table);
 
@@ -525,11 +525,11 @@ class QueryBuilder {
             query += this.wheres.map(where => {
                 if (where.operator == 'IN') {
                     this.parameters.push(where.field);
-                    return `?? ${where.operator} ${where.value}`;
+                    return `? ${where.operator} ${where.value}`;
                 }
 
                 this.parameters.push(where.field, where.value);
-                return `?? ${where.operator} ?`;
+                return `? ${where.operator} ?`;
             }).join(' AND ');
         }
 

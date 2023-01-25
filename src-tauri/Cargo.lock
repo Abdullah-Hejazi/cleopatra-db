@@ -61,6 +61,7 @@ dependencies = [
  "tauri",
  "tauri-build",
  "tokio",
+ "tuple",
 ]
 
 [[package]]
@@ -3719,6 +3720,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "761e8d5ad7ce14bb82b7e61ccc0ca961005a275a060b9644a2431aa11553c2ff"
 dependencies = [
  "serde_json",
+]
+
+[[package]]
+name = "tuple"
+version = "0.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "39a40ba241047e1174c927dc5f61c141a166b938d61a2ff61838441368cc7d0e"
+dependencies = [
+ "num-traits",
+ "serde",
 ]
 
 [[package]]

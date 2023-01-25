@@ -33,11 +33,10 @@ export default {
     },
 
     mounted () {
-        // settings.get('savedAccounts').then(value => {
-        //     if (value?.data) {
-        //         this.savedAccounts = JSON.parse(value.data)
-        //     }
-        // })
+        let accounts = localStorage.getItem('savedAccounts')
+        if (accounts) {
+            this.savedAccounts = JSON.parse(accounts)
+        }
     },
 
     methods: {
@@ -50,9 +49,9 @@ export default {
 
             this.error = ''
 
-            this.$store.dispatch('database/connect', data).then(result => {
-                console.log(result)
-                // this.$router.push('/databases')
+            this.$store.dispatch('database/connect', data).then(async (result) => {
+                await this.$store.dispatch('database/connectSet', data)
+                this.$router.push('/databases')
             }).catch(error => {
                 this.$store.dispatch('database/clearConnection')
                 this.error = error
@@ -62,16 +61,6 @@ export default {
         },
 
         MoreOptions() {
-            this.$store.dispatch('database/test').then(result => {
-                console.log(result)
-                // this.$router.push('/databases')
-            }).catch(error => {
-                this.$store.dispatch('database/clearConnection')
-                this.error = error
-            }).finally(() => {
-                this.$loading.hide()
-            })
-
             this.moreOptions.active = !this.moreOptions.active
             if (this.moreOptions.active) {
                 this.moreOptions.icon = 'pi pi-angle-up'
@@ -100,6 +89,7 @@ export default {
             // settings.set('savedAccounts', {
             //     data: JSON.stringify(this.savedAccounts)
             // })
+            localStorage.setItem('savedAccounts', JSON.stringify(this.savedAccounts))
 
             this.displayNameDialog = false
         },
@@ -107,9 +97,7 @@ export default {
         RemoveAccount(index) {
             this.savedAccounts.splice(index, 1);
 
-            // settings.set('savedAccounts', {
-            //     data: JSON.stringify(this.savedAccounts)
-            // })
+            localStorage.setItem('savedAccounts', JSON.stringify(this.savedAccounts))
         },
 
         async LoadAccount() {
