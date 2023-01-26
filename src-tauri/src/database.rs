@@ -40,36 +40,31 @@ impl DB {
             None => return Err("Not connected to database".to_string()),
         };
 
-        //let parameters = params.into_iter().collect::<Vec<_>>();
+        let query = query.with(params);
 
-        let statement = match conn.prep(query) {
-            Ok(statement) => statement,
-            Err(e) => return Err(e.to_string()),
-        };
+        let y = query.run(conn);
 
-        let rows: Vec<Row> = match conn.exec(statement, params) {
-            Ok(rows) => rows,
-            Err(e) => return Err(e.to_string()),
-        };
-
-        let json_values: Vec<Value> = rows.into_iter().try_fold(Vec::new(), |mut json_values, row| {
+        let result: Vec<Value> = y.map_err(|e| e.to_string())?.map(|row_result| {
             let mut row_map = HashMap::new();
+            let row = row_result.unwrap_or_else(|e| panic!("Error: {}", e));
             let columns = row.columns();
-            for (index, column) in columns.iter().enumerate() {
-                let val: String = match row.get_opt(index) {
-                    Some(val) => val.unwrap_or("".to_string()),
-                    None => return Err("Failed to get value from row".to_string()),
-                };
 
-                
-                row_map.insert(column.name_str(), val);
+            for (i, column) in columns.iter().enumerate() {
+                let row_option = row.get_opt::<String, usize>(i);
+
+                let row_result = row_option.unwrap_or(Ok("".to_string()));
+
+                let value = row_result.unwrap_or("".to_string());
+
+                row_map.insert(column.name_str().to_string(), json!(value));
             }
-            json_values.push(json!(row_map));
 
-            Ok::<Vec<serde_json::Value>, String>(json_values)
-        })?;
-        Ok(json_values)
+            json!(row_map)
+        }).collect();
+
+        Ok(result)
     }
+
 }
 
 lazy_static! {

@@ -176,9 +176,9 @@ export default {
 
             this.$store.dispatch('database/loadTable', form).then(result => {
                 if (result.success) {
-                    this.data = result.data[0][0]
-                    this.columns = result.data[1][0]
-                    this.pagination.total = result.data[0][1][0].count
+                    this.data = result.data[0]
+                    this.columns = result.data[2]
+                    this.pagination.total = result.data[1][0].count || 0
                     this.tableStructure = result.data[0][2]
                     this.LoadTableKey()
                 } else {

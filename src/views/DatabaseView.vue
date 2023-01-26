@@ -41,7 +41,7 @@ export default {
                 } else {
                     result.data.forEach((item, index) => {
                         let temp = {
-                            label: item[result.name],
+                            label: item['Tables_in_' + this.$route.params.database],
                             icon: 'pi pi-table',
                             index: index
                         }

@@ -1,6 +1,7 @@
 // import mysql from 'mysql2/promise'
 import dbservice from '@/services/dbservice'
 import QueryBuilder from '@/services/querybuilder'
+import { invoke } from '@tauri-apps/api'
 
 const database = {
     namespaced: true,
@@ -44,28 +45,34 @@ const database = {
                 multipleStatements: true
             }
 
-            return dbservice.createConnection(data)
-        },
+            await dbservice.createConnection(data)
 
-        async connectSet(context, data) {
+            
             context.commit('setData', data)
             context.commit('setConnected', true)
+
+            return '';
         },
 
         async refreshDatabases(context) {
-            let query1 = QueryBuilder.select('*').from('information_schema', 'SCHEMATA').build();
-            // let query2 = QueryBuilder.select('*').from('information_schema', 'COLLATIONS').build();
+            try {
+                let query1 = QueryBuilder.select('*').from('information_schema', 'SCHEMATA').build();
+                let query2 = QueryBuilder.select('*').from('information_schema', 'COLLATIONS').build();
 
-            return dbservice.query({
-                query: 'SELECT * FROM information_schema.SCHEMATA',
-                parameters: [
-                ]
-            })
-        },
+                let result = await dbservice.query(query1, query2)
 
-        async refreshDatabasesSet(context, data) {
-            context.commit('setDatabases', data)
-            // context.commit('setCollations', result[1])
+                context.commit('setDatabases', result[0])
+                context.commit('setCollations', result[1])
+
+                return {
+                    success: true
+                }
+            } catch (e) {
+                return {
+                    success: false,
+                    error: e
+                }
+            }
         },
 
         async createDatabase(context, form) {
@@ -119,9 +126,8 @@ const database = {
 
                 result = await dbservice.query(query, query2);
 
-                name = result[1][0][0].name
-                engines = result[0][1]
-                result = result[0][0]
+                result = result[0]
+                engines = result[1]
 
             } catch (e) {
                 return {
@@ -133,7 +139,6 @@ const database = {
             return {
                 success: true,
                 data: result,
-                name: name,
                 engines: engines
             }
         },
@@ -198,6 +203,8 @@ const database = {
                 query.limit(form.perPage).offset(form.page);
 
                 result = await dbservice.query(query.build(), countQuery.build(), describeQuery)
+
+                console.log(result)
 
             } catch (e) {
                 return {

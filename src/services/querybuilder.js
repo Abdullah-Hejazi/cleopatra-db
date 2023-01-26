@@ -31,11 +31,9 @@ class QueryBuilder {
     }
 
     static describe(database, table) {
-        let parameters = [database, table];
-
         return {
-            query: `DESCRIBE ?.?`,
-            parameters: parameters
+            query: `DESCRIBE \`${database}\`.\`${table}\``,
+            parameters: []
         }
     }
 
@@ -381,8 +379,7 @@ class QueryBuilder {
         query += this.fields.join(', ');
 
         if (this.database && this.table) {
-            query += ` FROM ?.?`;
-            this.parameters.push(this.database, this.table);
+            query += ` FROM \`${this.database}\`.\`${this.table}\``;
         }
 
         if (this.wheres.length > 0) {
@@ -415,8 +412,7 @@ class QueryBuilder {
 
 
         if (this.database) {
-            query += ` FROM ?`;
-            this.parameters.push(this.database)
+            query += ` FROM \`${this.database}\``;
         }
 
         return {
@@ -515,9 +511,7 @@ class QueryBuilder {
     }
 
     #buildDelete() {
-        let query = `DELETE FROM ?.?`;
-
-        this.parameters.push(this.database, this.table);
+        let query = `DELETE FROM \`${this.database}\`.\`${this.table}\``;
 
         if (this.wheres.length > 0) {
             query += ' WHERE ';

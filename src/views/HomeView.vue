@@ -61,13 +61,13 @@ export default {
             this.error = ''
             this.$loading.show()
 
-            this.$store.dispatch('database/refreshDatabases').then(async (result) => {
-                await this.$store.dispatch('database/refreshDatabasesSet', result)
-            }).catch(error => {
-                this.error = error
-            }).finally(() => {
-                this.$loading.hide()
-            })
+            let result = await this.$store.dispatch('database/refreshDatabases')
+            
+            if (!result.success) {
+                this.error = result.error
+            }
+
+            this.$loading.hide()
         }
     }
 }

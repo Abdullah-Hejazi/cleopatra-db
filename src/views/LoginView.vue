@@ -49,15 +49,17 @@ export default {
 
             this.error = ''
 
-            this.$store.dispatch('database/connect', data).then(async (result) => {
-                await this.$store.dispatch('database/connectSet', data)
+            let result = await this.$store.dispatch('database/connect', data);
+
+            this.$loading.hide()
+
+            if (result === '') {
                 this.$router.push('/databases')
-            }).catch(error => {
-                this.$store.dispatch('database/clearConnection')
-                this.error = error
-            }).finally(() => {
-                this.$loading.hide()
-            })
+                return
+            }
+            
+            this.error = error
+            this.$store.dispatch('database/clearConnection')
         },
 
         MoreOptions() {

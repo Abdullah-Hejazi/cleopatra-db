@@ -2,12 +2,18 @@ import { invoke } from '@tauri-apps/api'
 
 export default {
     createConnection: async (data) => {
-        return invoke('login', {
-            host: data.host,
-            username: data.user,
-            password: data.password,
-            port: data.port
-        })
+        return new Promise( (resolve, reject) => {
+            invoke('login', {
+                host: data.host,
+                username: data.user,
+                password: data.password,
+                port: data.port
+            }).then(result => {
+                resolve(result)
+            }).catch(error => {
+                reject(error)
+            })
+        });
     },
 
     getConnection: () => {
@@ -15,22 +21,25 @@ export default {
     },
 
     query: (...data) => {
-        let query = '';
-        let parameters = [];
+        let promises = [];
 
         data.forEach(item => {
-            if (item.query) {
-                query += item.query + ';'
-            }
-
-            if (item.parameters) {
-                parameters.push(...item.parameters)
-            }
+            promises.push(
+                new Promise( (resolve, reject) => {
+                    invoke('query', {
+                        query: item.query,
+                        params: item.parameters.map(param => String(param))
+                    }).then(result => {
+                        resolve(result)
+                    }).catch(error => {
+                        reject(error)
+                    })
+                })
+            )
         })
 
-        return invoke('query', {
-            query: query,
-            params: parameters
+        return Promise.all(promises).catch(error => {
+            console.error(error)
         })
     },
 
