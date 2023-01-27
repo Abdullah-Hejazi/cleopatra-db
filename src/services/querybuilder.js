@@ -65,17 +65,15 @@ class QueryBuilder {
     }
 
     static createDatabase(database, charset, collation) {
-        let query = `CREATE DATABASE ?`;
-        let parameters = [database];
+        let query = `CREATE DATABASE \`${database}\``;
+        let parameters = [];
 
         if (charset) {
-            query += ` CHARACTER SET ?`;
-            parameters.push(charset);
+            query += ` CHARACTER SET \`${charset}\``;
         }
 
         if (collation) {
-            query += ` COLLATE ?`;
-            parameters.push(collation);
+            query += ` COLLATE \`${collation}\``;
         }
 
         return {
@@ -85,8 +83,8 @@ class QueryBuilder {
     }
 
     static dropDatabase(database) {
-        let query = `DROP DATABASE ?`;
-        let parameters = [database];
+        let query = `DROP DATABASE \`${database}\``;
+        let parameters = [];
 
         return {
             query: query,
