@@ -127,7 +127,7 @@ export default {
 
             <Column v-if="hasKey" selection-mode="multiple" header-style="width: 3rem" />
 
-            <Column :sortable="true" v-for="(col, index) of columns" :field="col.name" :header="col.name" :key="index" style="width: 100px;">
+            <Column :sortable="true" v-for="(col, index) of columns" :field="col.Field" :header="col.Field" :key="index" style="width: 100px;">
                 <template #body="slotProps">
                     <div class="row-data" v-on:dblclick="EditCell(slotProps)">
                         {{ slotProps.data[slotProps.field] }} &nbsp;

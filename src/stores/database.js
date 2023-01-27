@@ -204,8 +204,6 @@ const database = {
 
                 result = await dbservice.query(query.build(), countQuery.build(), describeQuery)
 
-                console.log(result)
-
             } catch (e) {
                 return {
                     success: false,

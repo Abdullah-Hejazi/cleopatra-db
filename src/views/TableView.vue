@@ -179,7 +179,7 @@ export default {
                     this.data = result.data[0]
                     this.columns = result.data[2]
                     this.pagination.total = result.data[1][0].count || 0
-                    this.tableStructure = result.data[0][2]
+                    this.tableStructure = result.data[2]
                     this.LoadTableKey()
                 } else {
                     this.error = result.error
@@ -538,7 +538,7 @@ export default {
                     <InputText v-model="search.value" placeholder="Search" class="w-full" />
                 </div>
                 <div class="col-12 md:col-5 px-1">
-                    <Dropdown v-model="search.field" :options="columns" optionLabel="name" placeholder="Field" class="w-full" />
+                    <Dropdown v-model="search.field" :options="columns" optionLabel="Field" placeholder="Field" class="w-full" />
                 </div>
             </div>
 

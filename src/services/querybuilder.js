@@ -104,8 +104,8 @@ class QueryBuilder {
     }
 
     static dropTable (database, table) {
-        let query = `DROP TABLE ?.?`;
-        let parameters = [database, table];
+        let query = `DROP TABLE \`${database}\`.\`${table}\``;
+        let parameters = [];
 
         return {
             query: query,
@@ -422,9 +422,7 @@ class QueryBuilder {
     }
 
     #buildCreateTable() {
-        let query = `CREATE TABLE ?.? (`;
-
-        this.parameters.push(this.database, this.table);
+        let query = `CREATE TABLE \`${this.database}\`.\`${this.table}\` (`;
 
         // query += this.columns.join(', ');
 
@@ -458,14 +456,12 @@ class QueryBuilder {
     }
 
     #buildInsert() {
-        let query = `INSERT INTO ?.? `;
+        let query = `INSERT INTO \`${this.database}\`.\`${this.table}\` `;
 
-        this.parameters.push(this.database, this.table);
-
-        query += ` (${this.fields.map(field => '?').join(', ')})`;
-        this.fields.forEach (field => {
-            this.parameters.push(field.column);
-        })
+        query += ` (${this.fields.map(field => '`' + field.column + '`').join(', ')})`;
+        // this.fields.forEach (field => {
+        //     this.parameters.push(field.column);
+        // })
 
         query += ` VALUES (${this.fields.map(field => '?').join(', ')})`;
         this.fields.forEach (field => {
@@ -479,14 +475,11 @@ class QueryBuilder {
     }
 
     #buildUpdate() {
-        let query = `UPDATE ?.? SET `;
+        let query = `UPDATE \`${this.database}\`.\`${this.table}\` SET `;
 
-        this.parameters.push(this.database, this.table);
-
-        query += this.fields.map(field => `? = ?`).join(', ');
+        query += this.fields.map(field => `\`${field.column}\` = ?`).join(', ');
 
         this.fields.forEach (field => {
-            this.parameters.push(field.column);
             this.parameters.push(field.value);
         })
 
@@ -495,12 +488,12 @@ class QueryBuilder {
 
             query += this.wheres.map(where => {
                 if (where.operator == 'IN') {
-                    this.parameters.push(where.field);
-                    return `? ${where.operator} ${where.value}`;
+                    this.parameters.push(where.value);
+                    return `\`${where.field}\` ${where.operator} ?`;
                 }
 
-                this.parameters.push(where.field, where.value);
-                return `? ${where.operator} ?`;
+                this.parameters.push(where.value);
+                return `\`${where.field}\` ${where.operator} ?`;
             }).join(' AND ');
         }
 
