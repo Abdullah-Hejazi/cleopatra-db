@@ -43,9 +43,9 @@ impl DB {
 
         let query = query.with(params);
 
-        let y = query.run(conn);
+        let query_run = query.run(conn);
 
-        let result: Vec<Value> = y.map_err(|e| e.to_string())?.map(|row_result| {
+        let result: Vec<Value> = query_run.map_err(|e| e.to_string())?.map(|row_result| {
             let mut row_map = HashMap::new();
             let row = row_result.unwrap_or_else(|e| panic!("Error: {}", e));
             let columns = row.columns();
@@ -128,9 +128,6 @@ pub async fn login(host: &str, username: &str, password: &str, port: &str) -> re
 pub async fn query(query: &str, params: Vec<String>) -> result::Result<Vec<Value>, String> {
     let db = DB_INSTANCE.clone();
     let mut db = db.lock().await;
-
-    println!("Query: {}", query);
-    println!("Params: {:?}", params);
     
     let rows = Box::new(&mut db).as_mut().query(query, params).await;
 
