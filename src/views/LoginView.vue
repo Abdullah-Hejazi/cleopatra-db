@@ -133,7 +133,7 @@ export default {
     <div class="login">
         <div class="loginData-card loginData-margin mx-auto surface-card p-4 shadow-2 border-round">
             <div class="text-center mb-5">
-                <img src="@/assets/logo2.png" alt="DB Weiv" width="50" class="mb-3">
+                <img src="@/assets/logo2.png" alt="Cleopatra DB" width="50" class="mb-3">
                 <div class="text-900 text-3xl font-medium mb-3">{{ $t('login.title') }}</div>
             </div>
 

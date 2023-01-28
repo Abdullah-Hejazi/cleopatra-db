@@ -3,7 +3,7 @@
 import TitleBar from '@/components/TitleBar.vue'
 
 export default {
-    name: 'DB Weiv - Database Viewer',
+    name: 'Cleopatra DB - Database Viewer',
 
     data() {
         return {
@@ -122,8 +122,8 @@ export default {
         <TitleBar :settings="OpenSettings" :about="() => about = true" />
 
 
-        <p id="db-weiv-loading-module">
-            <ProgressSpinner strokeWidth="3" class="db-weiv-loading-module-spinner" />
+        <p id="cleopatra-db-loading-module">
+            <ProgressSpinner strokeWidth="3" class="cleopatra-db-loading-module-spinner" />
         </p>
 
         <ScrollPanel class="scrollbar-themed">
@@ -146,10 +146,10 @@ export default {
             </div>
         </Dialog>
 
-        <Dialog class="settings-dialog" :header="$t('general.about') + ' DB Weiv'" v-model:visible="about" :modal="true">
+        <Dialog class="settings-dialog" :header="$t('general.about') + ' Cleopatra DB '" v-model:visible="about" :modal="true">
             <div>
                 <div class="mb-5">
-                    DB Weiv, is a database viewer and editor for developers.
+                    Cleopatra DB, is a database viewer and editor for developers.
                 </div>
                 <div>
                     Developed with love by <a class="text-primary" href="https://twitter.com/AbdullahHejazi6" target="_blank">Abdullah Hejazi</a>
@@ -186,7 +186,7 @@ body {
     max-width: 90vw;
 }
 
-#db-weiv-loading-module {
+#cleopatra-db-loading-module {
     position: fixed;
     width: 100vw;
     height: 100vh;
@@ -199,7 +199,7 @@ body {
     display: none;
 }
 
-.db-weiv-loading-module-spinner {
+.cleopatra-db-loading-module-spinner {
     position: fixed;
     z-index: 9999;
     top: calc(50vh - 50px);

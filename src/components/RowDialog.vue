@@ -104,6 +104,16 @@ export default {
         },
 
         FinishRow() {
+            this.tableStructure.forEach(column => {
+                if (column.Field in this.data && this.TypeExists(this.types.dates, column.Type)) {
+                    this.data[column.Field] = this.FormatDate(this.data[column.Field])
+                }
+
+                else if (column.Field in this.data && this.TypeExists(this.types.datetimes, column.Type)) {
+                    this.data[column.Field] = this.FormatDateTime(this.data[column.Field])
+                }
+            })
+
             this.finish(this.data, this.original)
         }
     }

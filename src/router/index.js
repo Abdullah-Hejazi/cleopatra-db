@@ -56,7 +56,7 @@ router.beforeEach((to, from) => {
 })
 
 router.afterEach((to) => {
-    let title = 'DB Weiv';
+    let title = 'Cleopatra DB';
 
     if (to.meta.title) {
         title += ' - '
