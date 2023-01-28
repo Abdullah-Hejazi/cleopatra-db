@@ -246,6 +246,7 @@ const database = {
                 }
 
                 await dbservice.query(query.build())
+
             } catch (e) {
                 return {
                     success: false,

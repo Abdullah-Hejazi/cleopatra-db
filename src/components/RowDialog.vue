@@ -104,17 +104,19 @@ export default {
         },
 
         FinishRow() {
+            let data = JSON.parse(JSON.stringify(this.data))
+
             this.tableStructure.forEach(column => {
-                if (column.Field in this.data && this.TypeExists(this.types.dates, column.Type)) {
-                    this.data[column.Field] = this.FormatDate(this.data[column.Field])
+                if (column.Field in data && this.TypeExists(this.types.dates, column.Type)) {
+                    data[column.Field] = this.FormatDate(data[column.Field])
                 }
 
-                else if (column.Field in this.data && this.TypeExists(this.types.datetimes, column.Type)) {
-                    this.data[column.Field] = this.FormatDateTime(this.data[column.Field])
+                else if (column.Field in data && this.TypeExists(this.types.datetimes, column.Type)) {
+                    data[column.Field] = this.FormatDateTime(data[column.Field])
                 }
             })
 
-            this.finish(this.data, this.original)
+            this.finish(data, this.original)
         }
     }
 }

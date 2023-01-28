@@ -182,8 +182,8 @@ class QueryBuilder {
 
     orderBy(field, direction) {
         this.additions.push({
-            query: `ORDER BY ? ${direction}`,
-            value: field
+            query: `ORDER BY \`${field}\` ${direction}`,
+            value: null
         });
 
         return this;
@@ -396,7 +396,8 @@ class QueryBuilder {
 
         this.additions.forEach (addition => {
             query += ` ${addition.query}`;
-            this.parameters.push(addition.value);
+            if (addition.value !== null)
+                this.parameters.push(addition.value);
         })
 
         return {
@@ -440,7 +441,8 @@ class QueryBuilder {
 
         this.additions.forEach (addition => {
             query += ` ${addition.query}`;
-            this.parameters.push(addition.value);
+            if (addition.value !== null)
+                this.parameters.push(addition.value);
         })
 
         return {

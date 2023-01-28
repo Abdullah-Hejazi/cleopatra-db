@@ -128,6 +128,9 @@ pub async fn login(host: &str, username: &str, password: &str, port: &str) -> re
 pub async fn query(query: &str, params: Vec<String>) -> result::Result<Vec<Value>, String> {
     let db = DB_INSTANCE.clone();
     let mut db = db.lock().await;
+
+    println!("Query: {}", query);
+    println!("Params: {:?}", params);
     
     let rows = Box::new(&mut db).as_mut().query(query, params).await;
 
