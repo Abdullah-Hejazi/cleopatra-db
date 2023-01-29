@@ -47,7 +47,15 @@
         "database_created": "Database created",
         "database_created_message": "Database has been created successfully",
         "database_deleted": "Database deleted",
-        "database_deleted_message": "The database has been deleted successfully"
+        "database_deleted_message": "The database has been deleted successfully",
+        "sql_editor": "SQL Editor",
+        "enter_query": "Enter your query...",
+        "execute": "Execute",
+        "query": "Query",
+        "result": "Result",
+        "no_results": "No results",
+        "rows": "Rows",
+        "first_query_results_only": "Only results from the first query will be returned."
     },
 
     "table": {

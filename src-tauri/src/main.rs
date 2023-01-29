@@ -9,7 +9,8 @@ fn main() {
 	tauri::Builder::default()
 		.invoke_handler(tauri::generate_handler![
 			database::login,
-			database::query
+			database::query,
+			database::raw_query,
 		])
 		.run(tauri::generate_context!())
 		.expect("error while running tauri application");

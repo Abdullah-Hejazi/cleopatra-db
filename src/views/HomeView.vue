@@ -1,12 +1,14 @@
 <script>
 import DatabaseItem from '@/components/DatabaseItem.vue';
+import SqlEditor from '@/components/SqlEditor.vue';
 import DatabaseManager from '@/services/databasemanager';
 
 export default {
     name: 'HomeView',
 
     components: {
-        DatabaseItem
+        DatabaseItem,
+        SqlEditor
     },
 
     data() {
@@ -19,7 +21,9 @@ export default {
             newDBError: '',
             error: '',
 
-            createDatabaseDialog: false
+            createDatabaseDialog: false,
+
+            SqlEditorDialog: false
         }
     },
 
@@ -91,6 +95,13 @@ export default {
                     class="p-button-text p-button-secondary"
                     @click="RefreshDatabase"
                 />
+
+                <Button
+                    icon="pi pi-hashtag"
+                    :label="$t('home.sql_editor')"
+                    class="p-button-text p-button-primary"
+                    @click="SqlEditorDialog = true"
+                />
             </div>
         </div>
 
@@ -139,6 +150,10 @@ export default {
                     <Button :label="$t('home.create_database')" @click="CreateDatabase" />
                 </div>
             </template>
+        </Dialog>
+
+        <Dialog :header="$t('home.sql_editor')" v-model:visible="SqlEditorDialog" :draggable="false" :modal="true">
+            <SqlEditor  />
         </Dialog>
     </div>
 </template>

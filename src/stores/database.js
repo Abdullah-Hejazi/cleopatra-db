@@ -307,7 +307,25 @@ const database = {
             context.commit('setData', null)
             context.commit('setConnected', false)
             // await dbservice.endConnection();
-        }
+        },
+
+        async executeQuery(context, query) {
+            let result = []
+
+            try {
+                result = await dbservice.rawQuery(query)
+            } catch (e) {
+                return {
+                    success: false,
+                    error: e.message
+                }
+            }
+
+            return {
+                success: true,
+                data: result
+            }
+        },
     },
 }
 

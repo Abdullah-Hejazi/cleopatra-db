@@ -3,6 +3,7 @@
 import CreateTableDialog from '@/components/CreateTableDialog.vue'
 import ImportDialog from '@/components/ImportDialog.vue'
 import ExportDialog from '@/components/ExportDialog.vue'
+import SqlEditor from './SqlEditor.vue'
 
 export default {
     name: 'TablesList',
@@ -10,7 +11,8 @@ export default {
     components: {
         CreateTableDialog,
         ImportDialog,
-        ExportDialog
+        ExportDialog,
+        SqlEditor
     },
 
     data() {
@@ -38,7 +40,8 @@ export default {
                         },
                         {
                             label: 'SQL Editor',
-                            icon: 'pi pi-hashtag'
+                            icon: 'pi pi-hashtag',
+                            command: () => this.SqlEditorDialog = true
                         },
                         {
                             label: 'Import',
@@ -62,7 +65,9 @@ export default {
             exportDialog: false,
 
 
-            deleteDatabaseDialog: false
+            deleteDatabaseDialog: false,
+
+            SqlEditorDialog: false
         }
     },
 
@@ -189,6 +194,10 @@ export default {
                 <Button :label="$t('general.cancel')" @click="deleteDatabaseDialog = false" class="p-button-text p-button-plain" />
                 <Button :label="$t('general.delete')" @click="DeleteDatabaseDoubleCheck" class="p-button-danger" />
             </template>
+        </Dialog>
+
+        <Dialog :header="$t('home.sql_editor')" v-model:visible="SqlEditorDialog" :draggable="false" :modal="true">
+            <SqlEditor :database="database" />
         </Dialog>
     </div>
 </template>

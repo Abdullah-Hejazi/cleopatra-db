@@ -43,6 +43,20 @@ export default {
         })
     },
 
+    rawQuery: (data) => {
+        return new Promise( (resolve, reject) => {
+            invoke('raw_query', {
+                query: data
+            }).then(result => {
+                resolve(result)
+            }).catch(error => {
+                reject(error)
+            })
+        }).catch(error => {
+            throw new Error(error)
+        })
+    },
+
     endConnection: () => {
         pool?.end();
         pool = null;
