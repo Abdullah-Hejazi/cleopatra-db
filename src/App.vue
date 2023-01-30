@@ -152,7 +152,7 @@ export default {
                     Cleopatra DB, is a database viewer and editor for developers.
                 </div>
                 <div>
-                    Developed with love by <a class="text-primary" href="https://twitter.com/AbdullahHejazi6" target="_blank">Abdullah Hejazi</a>
+                    Developed with love by <a class="text-primary" href="https://twitter.com/TechHejazi" target="_blank">Abdullah Hejazi</a>
                 </div>
 
                 <div class="flex justify-content-center mt-5">
