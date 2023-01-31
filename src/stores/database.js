@@ -290,7 +290,9 @@ const database = {
 
                 query.where(form.key, 'IN', form.values);
 
-                await dbservice.query(query.build())
+                let builtQuery = query.build();
+
+                let result = await dbservice.query(builtQuery)
             } catch (e) {
                 return {
                     success: false,

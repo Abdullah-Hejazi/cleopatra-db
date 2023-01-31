@@ -158,17 +158,17 @@ class QueryBuilder {
                 vals = value
             }
 
-            value = '(';
+            // value = '(';
 
-            value += vals.map(item => {
-                if (typeof item == 'string') {
-                    return `'${item.trim()}'`;
-                }
+            // value += vals.map(item => {
+            //     if (typeof item == 'string') {
+            //         return `'${item.trim()}'`;
+            //     }
 
-                return `'${item}'`
-            }).join(',')
+            //     return `'${item}'`
+            // }).join(',')
 
-            value += ')';
+            // value += ')';
         }
 
         this.wheres.push({
@@ -511,12 +511,19 @@ class QueryBuilder {
 
             query += this.wheres.map(where => {
                 if (where.operator == 'IN') {
-                    this.parameters.push(where.field);
-                    return `? ${where.operator} ${where.value}`;
+                    let values = where.value.map(val => String(val))
+                    this.parameters.push(...values);
+                    let queryTemp = `\`${where.field}\` ${where.operator} (`;
+
+                    queryTemp += where.value.map(value => '?').join(', ');
+
+                    queryTemp += ')';
+
+                    return queryTemp;
                 }
 
-                this.parameters.push(where.field, where.value);
-                return `? ${where.operator} ?`;
+                this.parameters.push(String(where.value));
+                return `\`${where.field}\` ${where.operator} ?`;
             }).join(' AND ');
         }
 
