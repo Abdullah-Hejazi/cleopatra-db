@@ -23,7 +23,6 @@ tokio = "1.24.2"
 lazy_static = "1.4.0"
 futures = "0.3.25"
 tuple = "0.5.1"
-sqlx = { version = "0.6.2", features = [ "runtime-tokio-rustls", "mysql" ] }
 
 [features]
 # by default Tauri runs in production mode

@@ -19,7 +19,7 @@ class DatabaseManager {
         const linesPerPatch = options.linesPerPatch || 1000;
 
         const sqlFile = new SqlFile(options.file, options.clear);
-        sqlFile.writeCreateTable(options.table, structure.structure);
+        sqlFile.writeCreateTable(options.database, options.table, structure.structure);
 
         let query = QueryBuilder.select('*');
         query.from(options.database, options.table);
@@ -33,10 +33,8 @@ class DatabaseManager {
 
             let [rows] = await dbservice.query(query.build());
 
-            sqlFile.writeInsert(options.table, rows);
+            sqlFile.writeInsert(options.database, options.table, rows);
         }
-
-        sqlFile.close();
     }
 
     static async getTableStructure(database, table) {

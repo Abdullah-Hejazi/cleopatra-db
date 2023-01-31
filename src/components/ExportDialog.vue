@@ -1,6 +1,7 @@
 <script>
 
 import DatabaseManager from '@/services/databasemanager'
+import { save } from '@tauri-apps/api/dialog';
 
 export default {
     name: 'ExportDialog',
@@ -24,8 +25,10 @@ export default {
     },
 
     methods: {
-        SelectFile () {
-            // let file = ipcRenderer.sendSync('save-file')
+        async SelectFile () {
+            const file = await save({
+                title: 'Select a file to export to'
+            });
 
             if (file) {
                 this.sqlFile = file

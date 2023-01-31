@@ -62,7 +62,7 @@ impl DB {
                 match row {
                     Ok(row) => row_to_json(row),
                     Err(e) => {
-                        println!("{}", e.to_string());
+                        println!("Error: {}", e.to_string());
                         json!({})
                     }
                 }

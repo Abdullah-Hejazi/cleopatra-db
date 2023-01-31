@@ -1,13 +1,12 @@
-import QueryBuilder from '@/services/querybuilder'
-import fs from 'fs'
+import { invoke } from '@tauri-apps/api'
 
 class SqlFile {
     constructor(file, clear=false) {
-        this.file = fs.createWriteStream(file, {flags: clear ? 'w' : 'a'});
+        this.filename = file;
     }
 
-    writeCreateTable(table, structure) {
-        let insert = `CREATE TABLE ${table} (\n`;
+    writeCreateTable(database, table, structure) {
+        let insert = `CREATE TABLE \`${table}\` (\n`;
         structure.forEach(column => {
             let defaultVal = column.Default ? `DEFAULT '${column.Default}'` : '';
 
@@ -18,38 +17,52 @@ class SqlFile {
 
         structure.forEach(column => {
             if (column.Key == 'UNI') {
-                insert += `ALTER TABLE ${table} ADD UNIQUE (${column.Field});\n`;
+                insert += `ALTER TABLE \`${table}\` ADD UNIQUE (${column.Field});\n`;
             }
             if (column.Key == 'MUL') {
-                insert += `ALTER TABLE ${table} ADD INDEX (${column.Field});\n`;
+                insert += `ALTER TABLE \`${table}\` ADD INDEX (${column.Field});\n`;
             }
         });
 
         insert += '\n';
 
-        this.file.write(insert);
+        this.write(insert)
     }
 
-    writeInsert(table, data) {
+    writeInsert(database, table, data) {
         data.forEach(line => {
-            this.file.write(this.getInsertStatement(table, line));
+            this.write(this.getInsertStatement(database, table, line))
         })
 
-        this.file.write('\n\n');
+        this.write('\n\n')
     }
 
-    getInsertStatement(table, data) {
+    formatDate(date) {
+        let d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+    
+        return [year, month, day].join('-');
+    }
+
+    getInsertStatement(database, table, data) {
         let columns = Object.keys(data).join('`, `');
 
         let values = Object.values(data).map(value => {
             if (typeof value == 'string') {
-                value = value.replace('"', '\\"');
-                value = value.replace(/(?:\r\n|\r|\n)/g, '\\n');
+                value = value.replaceAll('"', '\\"');
+                value = value.replaceAll(/(?:\r\n|\r|\n)/g, '\\n');
                 return `"${value}"`;
             }
 
             if (value instanceof Date && !isNaN(value)) {
-                return `"${value.toISOString().slice(0, 19).replace('T', ' ')}"`;
+                return `"${formatDate(value)}"`;
             }
 
             if (value === null) {
@@ -59,11 +72,14 @@ class SqlFile {
             return `"${value}"`
         }).join(', ');
 
-        return `INSERT INTO ${table} (\`${columns}\`) VALUES (${values});\n`;
+        return `INSERT INTO \`${table}\` (\`${columns}\`) VALUES (${values});\n`;
     }
 
-    close() {
-        this.file.end();
+    async write(data) {
+        await invoke('append_file', {
+            path: this.filename,
+            content: data
+        })
     }
 }
 

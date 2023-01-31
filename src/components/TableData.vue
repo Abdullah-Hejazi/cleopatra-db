@@ -35,6 +35,14 @@ export default {
         DuplicateRow(row) {
             this.duplicateRow(row)
         },
+
+        getRowData (data) {
+            if (typeof data === 'string' || data instanceof String) {
+                return data.substring(0, 50)
+            }
+
+            return data
+        }
     },
 
     props : [
@@ -130,7 +138,7 @@ export default {
             <Column :sortable="true" v-for="(col, index) of columns" :field="col.Field" :header="col.Field" :key="index" style="width: 100px;">
                 <template #body="slotProps">
                     <div class="row-data" v-on:dblclick="EditCell(slotProps)">
-                        {{ slotProps.data[slotProps.field] }} &nbsp;
+                        {{ getRowData(slotProps.data[slotProps.field]) }} &nbsp;
                     </div>
                 </template>
             </Column>

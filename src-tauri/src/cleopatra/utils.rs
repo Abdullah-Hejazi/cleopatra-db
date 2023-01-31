@@ -12,13 +12,13 @@ pub fn row_to_json(row: Row) -> serde_json::Value {
         let row_result = row_option.unwrap_or(Ok("".into()));
 
         let value = row_result.unwrap_or_else(|e| {
-            println!("{}", e.to_string());
+            println!("Error: {}", e.to_string());
             "".into()
         });
 
         let converted_value: serde_json::Value = match value {
             mysql::Value::NULL => {
-                json!("")
+                json!(null)
             }
 
             mysql::Value::Bytes(buffer) => {

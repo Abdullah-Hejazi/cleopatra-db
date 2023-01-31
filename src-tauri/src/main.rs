@@ -6,6 +6,7 @@
 mod cleopatra;
 
 use cleopatra::database;
+use cleopatra::filesystem;
 
 fn main() {
     tauri::Builder::default()
@@ -13,6 +14,7 @@ fn main() {
             database::login,
             database::query,
             database::raw_query,
+            filesystem::append_file
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
