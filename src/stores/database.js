@@ -189,8 +189,8 @@ const database = {
                 let query = QueryBuilder.select('*');
                 query.from(form.database, form.table);
 
-                if (form.search?.value && form.search?.field?.name) {
-                    query.where(form.search.field.name, form.search.operator, form.search.value);
+                if (form.search?.value && form.search?.field?.Field) {
+                    query.where(form.search.field.Field, form.search.operator, form.search.value);
                 }
 
                 if (form.sort) {

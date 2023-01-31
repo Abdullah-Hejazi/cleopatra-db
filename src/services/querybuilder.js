@@ -385,12 +385,12 @@ class QueryBuilder {
 
             query += this.wheres.map(where => {
                 if (where.operator == 'IN') {
-                    this.parameters.push(where.field);
-                    return `? ${where.operator} ${where.value}`;
+                    this.parameters.push(where.value);
+                    return `\`${where.field}\` ${where.operator} ?`;
                 }
 
-                this.parameters.push(where.field, where.value);
-                return `? ${where.operator} ?`;
+                this.parameters.push(where.value);
+                return `\`${where.field}\` ${where.operator} ?`;
             }).join(' AND ');
         }
 

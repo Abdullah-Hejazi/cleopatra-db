@@ -204,7 +204,7 @@ export default {
         },
 
         Search() {
-            if (! this.search.value || ! this.search.field?.name) {
+            if (! this.search.value || ! this.search.field?.Field) {
                 this.search.error = 'Search value and field are required !'
                 return
             }
