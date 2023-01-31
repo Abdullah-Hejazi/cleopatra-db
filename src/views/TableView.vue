@@ -48,7 +48,10 @@ export default {
                 {
                     label: 'Insert Row',
                     icon: 'pi pi-plus',
-                    command: () => this.newRow.active = true
+                    command: () => {
+                        this.newRow.error = ''
+                        this.newRow.active = true
+                    }
                 },
                 {
                     label: 'Search',

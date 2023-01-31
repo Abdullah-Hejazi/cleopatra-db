@@ -49,7 +49,8 @@ export default {
                         },
                         {
                             label: 'Export',
-                            icon: 'pi pi-download'
+                            icon: 'pi pi-download',
+                            command: () => this.exportDialog = true
                         },
                         {
                             label: 'Drop Database',

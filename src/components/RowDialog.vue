@@ -114,6 +114,10 @@ export default {
                 else if (column.Field in data && this.TypeExists(this.types.datetimes, column.Type)) {
                     data[column.Field] = this.FormatDateTime(data[column.Field])
                 }
+
+                if (column.Null === 'NO' && data[column.Field] === null) {
+                    delete data[column.Field]
+                }
             })
 
             this.finish(data, this.original)
