@@ -48,7 +48,11 @@ export default {
                     clear: true
                 })
             } else {
-                console.log('here')
+                await DatabaseManager.exportDatabase({
+                    database: this.database,
+                    file: this.sqlFile,
+                    clear: true
+                })
             }
             
 

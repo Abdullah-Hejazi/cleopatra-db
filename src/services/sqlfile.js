@@ -5,7 +5,7 @@ class SqlFile {
         this.filename = file;
     }
 
-    writeCreateTable(database, table, structure) {
+    writeCreateTable(table, structure) {
         let insert = `CREATE TABLE \`${table}\` (\n`;
         structure.forEach(column => {
             let defaultVal = column.Default ? `DEFAULT '${column.Default}'` : '';
@@ -29,9 +29,9 @@ class SqlFile {
         this.write(insert)
     }
 
-    writeInsert(database, table, data) {
+    writeInsert(table, data) {
         data.forEach(line => {
-            this.write(this.getInsertStatement(database, table, line))
+            this.write(this.getInsertStatement(table, line))
         })
 
         this.write('\n\n')
@@ -51,7 +51,7 @@ class SqlFile {
         return [year, month, day].join('-');
     }
 
-    getInsertStatement(database, table, data) {
+    getInsertStatement(table, data) {
         let columns = Object.keys(data).join('`, `');
 
         let values = Object.values(data).map(value => {

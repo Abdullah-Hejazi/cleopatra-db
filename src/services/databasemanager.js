@@ -19,7 +19,7 @@ class DatabaseManager {
         const linesPerPatch = options.linesPerPatch || 1000;
 
         const sqlFile = new SqlFile(options.file, options.clear);
-        sqlFile.writeCreateTable(options.database, options.table, structure.structure);
+        sqlFile.writeCreateTable(options.table, structure.structure);
 
         let query = QueryBuilder.select('*');
         query.from(options.database, options.table);
@@ -33,7 +33,34 @@ class DatabaseManager {
 
             let [rows] = await dbservice.query(query.build());
 
-            sqlFile.writeInsert(options.database, options.table, rows);
+            sqlFile.writeInsert(options.table, rows);
+        }
+    }
+
+    static async exportDatabase(options) {
+        try {
+            let tables = await this.getTables(options.database);
+
+            if (! tables.success) {
+                return tables;
+            }
+
+            tables.tables[0].forEach(async (table) => {
+
+                let tableOptions = {
+                    database: options.database,
+                    table: table['Tables_in_' + options.database],
+                    file: options.file,
+                    clear: false
+                }
+
+                await this.exportTable(tableOptions);
+            })
+        } catch (e) {
+            return {
+                success: false,
+                error: e.message
+            }
         }
     }
 
@@ -43,12 +70,12 @@ class DatabaseManager {
             let structure = await dbservice.query(describeQuery);
 
             return {
-                sucess: true,
+                success: true,
                 structure: structure[0]
             }
         } catch (e) {
             return {
-                sucess: false,
+                success: false,
                 error: e.message
             }
         }
@@ -62,33 +89,29 @@ class DatabaseManager {
             let [count] = await dbservice.query(countQuery.build());
 
             return {
-                sucess: true,
+                success: true,
                 count: count[0].count
             }
         } catch (e) {
             return {
-                sucess: false,
+                success: false,
                 error: e.message
             }
         }
     }
 
-    static async getDatabaseList() {
+    static async getTables(database) {
         try {
-            let query1 = QueryBuilder.select('*').from('information_schema', 'SCHEMATA').build();
-            let query2 = QueryBuilder.select('*').from('information_schema', 'COLLATIONS').build();
-
-            let [result] = await dbservice.query(query1, query2);
+            let query = QueryBuilder.show('FULL TABLES').from(database).build();
+            let tables = await dbservice.query(query);
 
             return {
-                sucess: true,
-                databases: result[0],
-                collations: result[1]
+                success: true,
+                tables: tables
             }
-
         } catch (e) {
             return {
-                sucess: false,
+                success: false,
                 error: e.message
             }
         }
@@ -105,7 +128,7 @@ class DatabaseManager {
             await dbservice.query(query)
         } catch (e) {
             return {
-                sucess: false,
+                success: false,
                 error: e.message
             }
         }
