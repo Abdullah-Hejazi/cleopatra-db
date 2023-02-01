@@ -14,7 +14,8 @@ fn main() {
             database::login,
             database::query,
             database::raw_query,
-            filesystem::append_file
+            filesystem::append_file,
+            filesystem::create_file,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -50,8 +50,7 @@ export default {
             } else {
                 await DatabaseManager.exportDatabase({
                     database: this.database,
-                    file: this.sqlFile,
-                    clear: true
+                    file: this.sqlFile
                 })
             }
             

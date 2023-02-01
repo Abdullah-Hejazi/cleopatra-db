@@ -1,6 +1,7 @@
 import dbservice from '@/services/dbservice'
 import QueryBuilder from '@/services/querybuilder'
 import SqlFile from '@/services/sqlfile'
+import { invoke } from '@tauri-apps/api'
 
 class DatabaseManager {
     /*
@@ -13,6 +14,12 @@ class DatabaseManager {
         }
     */
     static async exportTable(options) {
+        if (options.clear) {
+            let result = await invoke('create_file', {
+                path: options.file
+            })
+        }
+
         let count = await this.getTableCount(options.database, options.table);
         let structure = await this.getTableStructure(options.database, options.table);
 
@@ -39,6 +46,10 @@ class DatabaseManager {
 
     static async exportDatabase(options) {
         try {
+            let result = await invoke('create_file', {
+                path: options.file
+            })
+
             let tables = await this.getTables(options.database);
 
             if (! tables.success) {
@@ -46,7 +57,6 @@ class DatabaseManager {
             }
 
             tables.tables[0].forEach(async (table) => {
-
                 let tableOptions = {
                     database: options.database,
                     table: table['Tables_in_' + options.database],
