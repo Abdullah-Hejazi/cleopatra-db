@@ -1,7 +1,7 @@
 {
     "name": "cleopatra-db",
-    "version": "1.1.1",
-    "description": "A Database viewer for desktop",
+    "version": "1.0.0",
+    "description": "A Database viewer tool for Mysql.",
     "author": {
         "name": "Abdullah Hejazi",
         "email": "a.m.a.hejazi@gmail.com",

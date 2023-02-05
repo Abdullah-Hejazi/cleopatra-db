@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "cleopatra-db",
-    "version": "0.1.0"
+    "version": "1.0.0"
   },
   "tauri": {
     "allowlist": {
@@ -17,7 +17,7 @@
     "bundle": {
       "active": true,
       "category": "DeveloperTool",
-      "copyright": "",
+      "copyright": "hejazi.tech",
       "deb": {
         "depends": []
       },
@@ -30,7 +30,7 @@
         "icons/icon.ico"
       ],
       "identifier": "tech.hejazi.cleopatra-db",
-      "longDescription": "",
+      "longDescription": "A Database viewer tool for Mysql.",
       "macOS": {
         "entitlements": null,
         "exceptionDomain": "",
@@ -39,8 +39,8 @@
         "signingIdentity": null
       },
       "resources": [],
-      "shortDescription": "",
-      "targets": "all",
+      "shortDescription": "A Database viewer tool for Mysql.",
+      "targets": "deb",
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
