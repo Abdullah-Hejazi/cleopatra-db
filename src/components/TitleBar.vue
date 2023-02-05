@@ -45,7 +45,7 @@ export default {
                 <Button icon="pi pi-id-card" class="p-button-plain p-button-text ml-1" :label="$t('general.about')" @click="about" />
                 <Button v-if="$store.state.database.connected" icon="pi pi-power-off" class="p-button-plain p-button-text ml-1" :label="$t('general.logout')" @click="Logout" />
             </div>
-            <div class="text-500 drag-bar flex-grow-1">
+            <div data-tauri-drag-region class="text-500 drag-bar flex-grow-1">
                 &nbsp;
             </div>
         </div>

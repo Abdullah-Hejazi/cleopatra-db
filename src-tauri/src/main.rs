@@ -7,9 +7,24 @@ mod cleopatra;
 
 use cleopatra::database;
 use cleopatra::filesystem;
+use tauri::Manager;
 
 fn main() {
     tauri::Builder::default()
+        .setup(|app| {
+            let main_window = app.get_window("main");
+
+            match main_window {
+                Some(window) => {
+                    window.maximize()?;
+
+                    window.set_decorations(false)?;
+                }
+                None => {}
+            }
+
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             database::login,
             database::query,
