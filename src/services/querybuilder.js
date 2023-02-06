@@ -111,6 +111,16 @@ class QueryBuilder {
         };
     }
 
+    static truncateTable (database, table) {
+        let query = `TRUNCATE TABLE \`${database}\`.\`${table}\``;
+        let parameters = [];
+
+        return {
+            query: query,
+            parameters: parameters
+        };
+    }
+
     static delete (database, table) {
         let queryBuilder = new QueryBuilder();
         queryBuilder.type = 'DELETE';

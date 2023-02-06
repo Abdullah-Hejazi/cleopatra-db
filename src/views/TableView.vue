@@ -67,6 +67,14 @@ export default {
                     command: () => this.exportDialog = true
                 },
                 {
+                    separator: true
+                },
+                {
+                    label: this.$t('truncate.truncate'),
+                    icon: 'pi pi-file-excel',
+                    command: this.TruncateTableConfirmation
+                },
+                {
                     label: 'Drop Table',
                     icon: 'pi pi-trash',
                     command: this.DropTableConfirmation
@@ -260,6 +268,40 @@ export default {
                 header: 'Delete the table ?',
                 icon: 'pi pi-exclamation-triangle',
                 accept: this.DropTable
+            });
+        },
+
+
+        async TruncateTable() {
+            this.$loading.show()
+
+            await this.$store.dispatch('database/truncateTable', {
+                database: this.$route.params.database,
+                table: this.table
+            }).then(result => {
+                if (result.success) {
+                    this.$toast.add({
+                        severity: 'success',
+                        summary: this.$t('truncate.truncated'),
+                        detail: this.$t('truncate.truncated_success'),
+                        life: 3000
+                    });
+                } else {
+                    this.error = result.error
+                }
+
+            }).finally(() => {
+                this.LoadTable()
+                this.$loading.hide()
+            })
+        },
+
+        TruncateTableConfirmation() {
+            this.$confirm.require({
+                message: this.$t('truncate.confirmation'),
+                header: this.$t('truncate.truncate'),
+                icon: 'pi pi-exclamation-triangle',
+                accept: this.TruncateTable
             });
         },
 

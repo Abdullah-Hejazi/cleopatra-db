@@ -147,6 +147,14 @@ export default {
                 this.$loading.hide()
             })
         },
+
+        getTableName(name) {
+            if (name.length > 20) {
+                return name.substring(0, 20) + '...'
+            }
+            
+            return name
+        }
     }
 }
 </script>
@@ -161,12 +169,12 @@ export default {
                 <Menu id="config_menu" ref="menu" :model="items" :popup="true"></Menu>
             </template>
 
-            <ScrollPanel class="w-full scroll-menu" v-if="data.length > 0">
-                <Menu :model="data" class="w-full">
+            <ScrollPanel class="w-full scroll-menu pr-3 pb-3" v-if="data.length > 0">
+                <Menu :model="data" class="w-full" style="border: 0px solid black !important;">
                     <template #item="{ item }">
-                        <div :class="'p-menuitem-link pl-4 ' + (item.selected ? 'text-primary' : 'text-700')" v-if="! item.items" @click="LoadTable(item)">
+                        <div v-tooltip.right="item.label.length > 20 ? item.label : ''" :class="'p-menuitem-link pl-4 ' + (item.selected ? 'text-primary' : 'text-700')" v-if="! item.items" @click="LoadTable(item)">
                             <span class="pi pi-angle-right mt-1 mr-2" />
-                            {{ item.label }}
+                            {{ getTableName(item.label) }}
                         </div>
                     </template>
                 </Menu>
@@ -204,8 +212,8 @@ export default {
 </template>
 
 <style>
-.create-table-modal {
-    width: 650px;
-    max-width: 95vw;
-}
+    .create-table-modal {
+        width: 650px;
+        max-width: 95vw;
+    }
 </style>
