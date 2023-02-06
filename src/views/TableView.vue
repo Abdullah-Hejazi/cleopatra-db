@@ -537,7 +537,7 @@ export default {
                 />
             </template>
 
-            <ScrollPanel class="w-full scroll-menu2">
+            <ScrollPanel class="w-full scroll-menu2 pr-3 pb-3">
                 <TableData
                     :editCell="EditCell"
                     :hasKey="tableKey !== ''"

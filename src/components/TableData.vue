@@ -115,11 +115,11 @@ export default {
             :lazy="true"
             :row-hover="true"
             v-model:selection="selectedRows"
-            :showGridlines="true"
             paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
             :rows-per-page-options="[10,25,50]"
             responsive-layout="scroll"
             @sort="SortColumn"
+            style="border: 0px solid #d9d9d9 !important;"
         >
             <div class="text-center text-xl mb-4" v-if="error">
                 <InlineMessage severity="error" class="w-full scalein select-text">
