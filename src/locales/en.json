@@ -59,7 +59,9 @@
     },
 
     "table": {
-        "is_null": "Null"
+        "is_null": "Null",
+        "rename": "Rename Table",
+        "rename_success": "Table renamed successfully"
     },
 
     "import": {

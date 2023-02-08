@@ -121,6 +121,16 @@ class QueryBuilder {
         };
     }
 
+    static renameTable (database, table, newName) {
+        let query = `RENAME TABLE \`${database}\`.\`${table}\` TO \`${database}\`.\`${newName}\``;
+        let parameters = [];
+
+        return {
+            query: query,
+            parameters: parameters
+        };
+    }
+
     static delete (database, table) {
         let queryBuilder = new QueryBuilder();
         queryBuilder.type = 'DELETE';

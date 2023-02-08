@@ -232,7 +232,7 @@ const database = {
             }
 
             return {
-                success: false,
+                success: true,
                 data: result
             }
         },
@@ -252,7 +252,27 @@ const database = {
             }
 
             return {
-                success: false,
+                success: true,
+                data: result
+            }
+        },
+
+        async renameTable(context, form) {
+            let result = []
+
+            try {
+                let query = QueryBuilder.renameTable(form.database, form.table, form.new_name);
+
+                result = await dbservice.query(query)
+            } catch (e) {
+                return {
+                    success: false,
+                    error: e.message
+                }
+            }
+
+            return {
+                success: true,
                 data: result
             }
         },

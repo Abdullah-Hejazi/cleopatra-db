@@ -70,6 +70,11 @@ export default {
                     separator: true
                 },
                 {
+                    label: this.$t('table.rename'),
+                    icon: 'pi pi-pencil',
+                    command: () => this.renameTable.active = true
+                },
+                {
                     label: this.$t('truncate.truncate'),
                     icon: 'pi pi-file-excel',
                     command: this.TruncateTableConfirmation
@@ -135,7 +140,12 @@ export default {
             },
             tableStructure: [],
             tableKey: '',
-            exportDialog: false
+            exportDialog: false,
+            renameTable: {
+                active: false,
+                error: '',
+                new_name: ''
+            },
         }
     },
 
@@ -292,6 +302,39 @@ export default {
 
             }).finally(() => {
                 this.LoadTable()
+                this.$loading.hide()
+            })
+        },
+
+        async RenameTable () {
+            if (! this.renameTable.new_name) {
+                this.renameTable.error = 'New name is required !'
+                return
+            }
+
+            this.renameTable.error = ''
+
+            this.$loading.show()
+
+            await this.$store.dispatch('database/renameTable', {
+                database: this.$route.params.database,
+                table: this.table,
+                new_name: this.renameTable.new_name
+            }).then(result => {
+                if (result.success) {
+                    this.$toast.add({
+                        severity: 'success',
+                        summary: this.$t('table.rename'),
+                        detail: this.$t('table.rename_success'),
+                        life: 3000
+                    });
+
+                    this.DropTableEnd()
+                } else {
+                    this.renameTable.error = result.error
+                }
+
+            }).finally(() => {
                 this.$loading.hide()
             })
         },
@@ -475,6 +518,7 @@ export default {
     },
 
     mounted () {
+        this.error = ''
         this.LoadTable()
     },
 
@@ -510,6 +554,7 @@ export default {
             this.search.field = null
             this.search.searching = false
             this.sort = null
+            this.error = ''
             
             this.LoadTable()
 
@@ -598,6 +643,22 @@ export default {
 
             <div class="text-center mt-2 mb-0">
                 <Button class="p-button-text p-button-plain" :icon="moreOptions.icon" :label="moreOptions.label" @click="MoreOptions" />
+            </div>
+        </Dialog>
+
+        <Dialog header="Rename Table" v-model:visible="renameTable.active" class="search-dialog" :modal="true">
+            <div class="text-center text-xl mb-4" v-if="renameTable.error">
+                <InlineMessage severity="error" class="w-full scalein select-text">
+                    {{ renameTable.error }}
+                </InlineMessage>
+            </div>
+
+            <div class="md:flex grid-nogutter">
+                <InputText v-model="renameTable.new_name" placeholder="New Table Name" class="w-full" />
+            </div>
+
+            <div class="text-center mt-3">
+                <Button label="Rename Table" class="w-full" @click="RenameTable" />
             </div>
         </Dialog>
 
