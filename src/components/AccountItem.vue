@@ -6,7 +6,8 @@
             'index',
             'account',
             'remove',
-            'load'
+            'load',
+            'edit'
         ]
     }
 </script>
@@ -26,6 +27,7 @@
                 </div>
             </div>
             <div>
+                <Button icon="pi pi-pencil" class="p-button-text p-button-rounded  p-button-warning" @click="edit(index)" />
                 <Button icon="pi pi-trash" class="p-button-text p-button-rounded  p-button-danger" @click="remove(index)" />
             </div>
         </div>

@@ -37,7 +37,7 @@ export default {
 
 <template>
     <div class="title-bar surface-overlay px-1 flex justify-content-between">
-        <div class="flex align-items-center flex-grow-1">
+        <div class="flex align-items-center">
             <div class="flex align-items-center">
                 <img alt="logo" src="@/assets/logo2.png" height="34" class="mx-3">
                 <Button v-if="$store.state.database.connected" icon="pi pi-home" class="p-button-text p-button-plain" :label="$t('general.home')" @click="Home" />
@@ -47,6 +47,12 @@ export default {
             </div>
             <div data-tauri-drag-region class="text-500 drag-bar flex-grow-1">
                 &nbsp;
+            </div>
+        </div>
+
+        <div class="flex flex-grow-1 align-items-center justify-content-center">
+            <div class="text-gray-200" v-if="$store.state.database?.data">
+                {{ $store.state.database.data.user }}@{{ $store.state.database.data.host }}
             </div>
         </div>
 

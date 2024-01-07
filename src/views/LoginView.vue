@@ -28,7 +28,9 @@ export default {
             selectedAccount: false,
             selectedAccountIndex: 0,
             selectedAccountPassword: '',
-            savePassword: false
+            savePassword: false,
+            editAccountDialog: false,
+            editAccountData: {}
         }
     },
 
@@ -100,6 +102,11 @@ export default {
             this.savedAccounts.splice(index, 1);
 
             localStorage.setItem('savedAccounts', JSON.stringify(this.savedAccounts))
+        },
+
+        EditAccount(index) {
+            this.editAccountData = this.savedAccounts[index]
+            this.editAccountDialog = true
         },
 
         async LoadAccount() {
@@ -220,6 +227,7 @@ export default {
                     :index="index"
                     :remove="RemoveAccount"
                     :load="SelectAccount"
+                    :edit="EditAccount"
                 />
 
                 <div class="text-center text-600 mb-3" v-if="savedAccounts.length == 0">
@@ -270,6 +278,66 @@ export default {
                         class="p-button-text"
                     />
                     <Button :label="$t('login.login')" @click="LoadAccount" />
+                </div>
+            </template>
+        </Dialog>
+
+        <Dialog :header="$t('login.editAccount')" v-model:visible="editAccountDialog" class="display-name-dialog" :modal="true">
+            <div class="col-12">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon">
+                        <i class="pi pi-book"></i>
+                    </span>
+                    <InputText :placeholder="$t('login.displayName')" v-model="editAccountData.displayName" />
+                </div>
+            </div>
+            
+            <div class="col-12">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon">
+                        <i class="pi pi-user"></i>
+                    </span>
+                    <InputText :placeholder="$t('login.username')" v-model="editAccountData.username" />
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon">
+                        <i class="pi pi-lock"></i>
+                    </span>
+                    <Password :placeholder="$t('login.password')" v-model="editAccountData.password" toggle-mask :feedback="false" />
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon">
+                        <i class="pi pi-server"></i>
+                    </span>
+                    <InputText :placeholder="$t('login.host')" v-model="editAccountData.host"
+                        v-tooltip.right="$t('login.defaultsTo') + ': localhost'" />
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon">
+                        <i class="pi pi-sort-alt"></i>
+                    </span>
+                    <InputNumber :placeholder="$t('login.port')" v-model="editAccountData.port" mode="decimal" :use-grouping="false"
+                        v-tooltip.right="$t('login.defaultsTo') + ': 3306'" />
+                </div>
+            </div>
+
+            <template #footer>
+                <div class="flex justify-content-between">
+                    <Button
+                        :label="$t('general.cancel')"
+                        @click="editAccountDialog = false"
+                        class="p-button-text"
+                    />
+                    <Button :label="$t('general.save')" @click="SaveAccount" />
                 </div>
             </template>
         </Dialog>

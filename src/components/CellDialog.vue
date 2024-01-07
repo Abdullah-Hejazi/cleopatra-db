@@ -123,7 +123,7 @@ export default {
             <Calendar :placeholder="data.field" v-model="newValue" class="w-full" />
         </div>
 
-        <div v-else-if="TypeExists(types.dates, type)">
+        <div v-else-if="TypeExists(types.times, type)">
             <Calendar :placeholder="data.field" v-model="newValue" class="w-full" :showTime="true" :timeOnly="true" />
         </div>
 

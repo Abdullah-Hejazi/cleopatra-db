@@ -53,15 +53,15 @@ export default {
             this.data = JSON.parse(JSON.stringify(this.row))
 
             // format dates to a proper format
-            this.tableStructure.forEach(column => {
-                if (this.TypeExists(this.types.dates, column.Type)) {
-                    this.data[column.Field] = this.FormatDate(this.data[column.Field])
-                }
+            // this.tableStructure.forEach(column => {
+            //     if (this.TypeExists(this.types.dates, column.Type)) {
+            //         this.data[column.Field] = this.FormatDate(this.data[column.Field])
+            //     }
 
-                else if (this.TypeExists(this.types.datetimes, column.Type)) {
-                    this.data[column.Field] = this.FormatDateTime(this.data[column.Field])
-                }
-            })
+            //     else if (this.TypeExists(this.types.datetimes, column.Type)) {
+            //         this.data[column.Field] = this.FormatDateTime(this.data[column.Field])
+            //     }
+            // })
         }
     },
 
@@ -155,7 +155,7 @@ export default {
                 <Calendar :placeholder="row.Field" v-model="data[row.Field]" class="w-full" />
             </div>
 
-            <div v-else-if="TypeExists(types.dates, row.Type)">
+            <div v-else-if="TypeExists(types.times, row.Type)">
                 <p class="mb-1">{{ row.Field }}</p>
                 <Calendar :placeholder="row.Field" v-model="data[row.Field]" class="w-full" :showTime="true" :timeOnly="true" />
             </div>
