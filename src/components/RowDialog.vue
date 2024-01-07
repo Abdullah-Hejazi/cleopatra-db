@@ -53,26 +53,36 @@ export default {
             this.data = JSON.parse(JSON.stringify(this.row))
 
             // format dates to a proper format
-            // this.tableStructure.forEach(column => {
-            //     if (this.TypeExists(this.types.dates, column.Type)) {
-            //         this.data[column.Field] = this.FormatDate(this.data[column.Field])
-            //     }
+            this.tableStructure.forEach(column => {
+                if (this.TypeExists(this.types.dates, column.Type)) {
+                    this.data[column.Field] = this.FormatDate(this.data[column.Field])
+                }
 
-            //     else if (this.TypeExists(this.types.datetimes, column.Type)) {
-            //         this.data[column.Field] = this.FormatDateTime(this.data[column.Field])
-            //     }
-            // })
+                else if (this.TypeExists(this.types.datetimes, column.Type)) {
+                    this.data[column.Field] = this.FormatDateTime(this.data[column.Field])
+                }
+            })
         }
     },
 
     methods: {
-        FormatDate(date) {
-            date = new Date(date)
+        FormatDate(olddate) {
+            const date = new Date(olddate)
+
+            if (isNaN(date)) {
+                return olddate
+            }
+
             return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
         },
 
-        FormatDateTime(date) {
-            date = new Date(date)
+        FormatDateTime(olddate) {
+            const date = new Date(olddate)
+
+            if (isNaN(date)) {
+                return olddate
+            }
+
             return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
         },
 
