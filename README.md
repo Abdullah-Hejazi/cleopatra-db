@@ -1,5 +1,5 @@
 # Cleopatra DB
-Cleopatra DB is cross-platform Mysql Database viewer and editor made for windows, linux, macos
+Cleopatra DB is cross-platform Mysql Database viewer and editor.
 Its main objective is to be a beautiful and powerful alternative to things like PHPMYADMIN
 
 ![Clepatra SSH Screenshot](/images/table.png)
