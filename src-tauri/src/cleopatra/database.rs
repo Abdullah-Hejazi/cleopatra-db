@@ -106,8 +106,7 @@ pub async fn login(
 ) -> result::Result<String, String> {
     let db = DB_INSTANCE.clone();
     let mut db = db.lock().await;
-    Box::new(&mut db)
-        .as_mut()
+    (&mut db)
         .login(host, username, password, port)
         .await
 }
@@ -117,7 +116,7 @@ pub async fn query(query: &str, params: Vec<String>) -> result::Result<Vec<Value
     let db = DB_INSTANCE.clone();
     let mut db = db.lock().await;
 
-    let rows = Box::new(&mut db).as_mut().query(query, params).await;
+    let rows = (&mut db).query(query, params).await;
 
     rows.map_err(|e| e.to_string())
 }
@@ -127,7 +126,7 @@ pub async fn raw_query(query: &str) -> result::Result<Vec<Value>, String> {
     let db = DB_INSTANCE.clone();
     let mut db = db.lock().await;
 
-    let rows = Box::new(&mut db).as_mut().raw_query(query).await;
+    let rows = (&mut db).raw_query(query).await;
 
     rows.map_err(|e| e.to_string())
 }
