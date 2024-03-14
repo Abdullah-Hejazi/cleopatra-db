@@ -111,6 +111,16 @@ class QueryBuilder {
         };
     }
 
+    static truncateTable (database, table) {
+        let query = `TRUNCATE TABLE \`${database}\`.\`${table}\``;
+        let parameters = [];
+
+        return {
+            query: query,
+            parameters: parameters
+        };
+    }
+
     static delete (database, table) {
         let queryBuilder = new QueryBuilder();
         queryBuilder.type = 'DELETE';
@@ -477,9 +487,19 @@ class QueryBuilder {
     #buildUpdate() {
         let query = `UPDATE \`${this.database}\`.\`${this.table}\` SET `;
 
-        query += this.fields.map(field => `\`${field.column}\` = ?`).join(', ');
+        query += this.fields.map((field) => {
+            if (field.value === null) {
+                return `\`${field.column}\` = NULL`
+            }
+
+            return `\`${field.column}\` = ?`
+        }).join(', ');
 
         this.fields.forEach (field => {
+            if (field.value === null) {
+                return;
+            }
+
             this.parameters.push(field.value);
         })
 

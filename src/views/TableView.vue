@@ -67,6 +67,11 @@ export default {
                     command: () => this.exportDialog = true
                 },
                 {
+                    label: 'Truncate Table',
+                    icon: 'pi pi-exclamation-triangle',
+                    command: this.TruncateTableConfirmation
+                },
+                {
                     label: 'Drop Table',
                     icon: 'pi pi-trash',
                     command: this.DropTableConfirmation
@@ -254,12 +259,45 @@ export default {
             })
         },
 
+        async TruncateTable() {
+            this.$loading.show()
+
+            await this.$store.dispatch('database/truncateTable', {
+                database: this.$route.params.database,
+                table: this.table
+            }).then(result => {
+                if (result.success) {
+                    this.$toast.add({
+                        severity:'success',
+                        summary: 'Table truncated',
+                        detail:'Table has been truncated successfully',
+                        life: 3000
+                    });
+                } else {
+                    this.error = result.error
+                }
+
+            }).finally(() => {
+                this.LoadTable()
+                this.$loading.hide()
+            })
+        },
+
         DropTableConfirmation() {
             this.$confirm.require({
                 message: 'Are you sure you want to drop this table ?',
                 header: 'Delete the table ?',
                 icon: 'pi pi-exclamation-triangle',
                 accept: this.DropTable
+            });
+        },
+
+        TruncateTableConfirmation() {
+            this.$confirm.require({
+                message: 'Are you sure you want to Truncate this table ?',
+                header: 'Truncate the table ?',
+                icon: 'pi pi-exclamation-triangle',
+                accept: this.TruncateTable
             });
         },
 

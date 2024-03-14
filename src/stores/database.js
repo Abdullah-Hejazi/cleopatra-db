@@ -237,6 +237,26 @@ const database = {
             }
         },
 
+        async truncateTable(context, form) {
+            let result = []
+
+            try {
+                let query = QueryBuilder.truncateTable(form.database, form.table);
+
+                result = await dbservice.query(query)
+            } catch (e) {
+                return {
+                    success: false,
+                    error: e.message
+                }
+            }
+
+            return {
+                success: true,
+                data: result
+            }
+        },
+
         async insertRow(context, form) {
             try {
                 let query = QueryBuilder.insert(form.database, form.table);

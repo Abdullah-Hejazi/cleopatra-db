@@ -66,6 +66,15 @@ export default {
 
     methods: {
         Finish() {
+            if (this.TypeExists(this.types.datetimes, this.type) || this.TypeExists(this.types.dates, this.type)) {
+                let datetime = new Date(this.newValue);
+                this.newValue = datetime.toISOString().slice(0, 19).replace('T', ' ');
+            }
+
+            if (this.nullable && this.isNull) {
+                this.newValue = null;
+            }
+
             this.finish(this.data.field, this.newValue)
         },
 
